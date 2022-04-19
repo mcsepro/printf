@@ -1,43 +1,47 @@
 #include "main.h"
-
 /**
- * _printf - produces output according to a format
- * @format: format string containing the characters and the specifiers
- * Description: this function will call the get_print() function that will
- * determine which printing function to call depending on the conversion
- * specifiers contained into fmt
- * Return: length of the formatted output string
+ * _printf - function to print anything
+ * @format: types of argument passed to the function
+ *
+ *  Return: number of characters printed
  */
+
 int _printf(const char *format, ...)
 {
-	register short len = 0;
-	int (*printFunc)(va_list, mods *);
-	mods prefixes = PF_INIT;
-	const char *p = format;
+	int check = 0, i;
 	va_list arguments;
+	int (*func)(va_list);
 
 	va_start(arguments, format);
-	assert(invalidInputs(p));
-	for (; *p; p++)
+
+	if (format == NULL)
+		return (-1);
+
+	for (i = 0; format[i]; i++)
 	{
-		if (*p == '%')
+		if (format[i] == '%')
 		{
-			p++;
-			if (*p == '%')
+			i++;
+			if (!(format[i]))
+				return (-1);
+
+			func = get_flag_func(format[i]);
+
+			if (func == NULL)
 			{
-				len += _putchar('%');
-				continue;
+				_write('%');
+				_write(format[i]);
+				check += 2;
 			}
-			while (get_flags(*p, &prefixes))
-				p++;
-			printFunc = get_print(*p);
-			len += (printFunc)
-				? printFunc(arguments, &prefixes)
-				: _printf("%%%c", *p);
-		} else
-			len += _putchar(*p);
+			else
+				check += func(arguments);
+		}
+		else
+		{
+			_write(format[i]);
+			check++;
+		}
 	}
-	_putchar(FLUSH);
 	va_end(arguments);
-	return (len);
+	return (check);
 }
