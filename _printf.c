@@ -1,32 +1,47 @@
 #include "main.h"
 /**
- * _printf - print a char or a string
- * @format: It's a character string
- * Return: the number of characters the function is printing
+ * _printf - function to print anything
+ * @format: types of argument passed to the function
+ *
+ *  Return: number of characters printed
  */
+
 int _printf(const char *format, ...)
 {
-	st_fmt st_format[] = {
-		{"c", func_char},
-		{"s", func_string},
-		{"d", func_digit},
-		{"i", func_digit},
-		{"%", func_percent},
-		{"b", func_binary_convert},
-		{"u", func_unsig_int},
-		{"o", func_octal_convert},
-		{"x", func_hex_Lowcase_convert},
-		{"X", func_hex_Upcase_convert},
-		{"S", func_stringUppercase},
-		{"r", func_revstr},
-		{"R", func_rot13},
-		{NULL, NULL}};
+	int check = 0, i;
+	va_list arguments;
+	int (*func)(va_list);
 
-	va_list list;
-	int count = 0;
+	va_start(arguments, format);
 
-	va_start(list, format);
-	count =	get_match_func(format, list, st_format);
-	va_end(list);
-	return (count);
+	if (format == NULL)
+		return (-1);
+
+	for (i = 0; format[i]; i++)
+	{
+		if (format[i] == '%')
+		{
+			i++;
+			if (!(format[i]))
+				return (-1);
+
+			func = get_flag_func(format[i]);
+
+			if (func == NULL)
+			{
+				_write('%');
+				_write(format[i]);
+				check += 2;
+			}
+			else
+				check += func(arguments);
+		}
+		else
+		{
+			_write(format[i]);
+			check++;
+		}
+	}
+	va_end(arguments);
+	return (check);
 }

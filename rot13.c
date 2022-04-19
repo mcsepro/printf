@@ -1,36 +1,38 @@
 #include "main.h"
 
 /**
- * func_rot13 - encodes a string using rot13.
- * @list: the list of arguments the funcion id receiving
- * Return: count characters
+ * rot13 - encode string to rot13
+ * @arg_list: string to encode.
+ *
+ * Return: encoded string
  */
-int func_rot13(va_list list)
+
+int rot13(va_list arg_list)
 {
-	int i = 0, j = 0, count = 0;
-	char arr1[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-	char arr2[] = "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm";
-	char *s;
+	char a[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+	char b[] = "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm";
+	int i;
+	int j;
+	char *ptr;
 
-	s = va_arg(list, char *);
+	ptr = va_arg(arg_list, char *);
 
-	for (i = 0; s[i] != 0; i++)
+	if (ptr == NULL)
+		return (-1);
+
+	for (i = 0; ptr[i] != '\0'; i++)
 	{
-		for (j = 0; arr1[j] != 0; j++)
+		for (j = 0; j <= 52; j++)
 		{
-			if (s[i] == arr1[j])
+			if (ptr[i] == a[i])
 			{
-				count++;
-				_putchar(arr2[j]);
+				_write(b[i]);
 				break;
 			}
-			else if (arr1[j + 1] == 0)
-			{
-				_putchar(s[i]);
-				count++;
-			}
 		}
-
+		if (j == 53)
+			_write(ptr[i]);
 	}
-	return (count);
+
+	return (i);
 }
