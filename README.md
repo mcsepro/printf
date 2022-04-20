@@ -13,8 +13,6 @@ Background Context
 
 Write your own printf function.
 
-^ In this picture, Kris, and Jul
-Resources
 
 **Read or watch:**
 
