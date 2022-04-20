@@ -1,76 +1,38 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef ALX_A
+#define ALX_A
 
-#include <stdlib.h>
 #include <stdarg.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <limits.h>
+#include <stdio.h>
+
 
 /**
- * struct flags - struct containing flags to "turn on"
- * when a flag specifier is passed to _printf()
- * @plus: flag for the '+' character
- * @space: flag for the ' ' character
- * @hash: flag for the '#' character
+ * struct format - the struct by name stfmt
+ * @fmt: index by function
+ * @func: pointer to function - funtion print
  */
-typedef struct flags
+typedef struct st_fmt
 {
-	int plus;
-	int space;
-	int hash;
-} flags_t;
+	char *fmt;
+	int (*func)(va_list list);
+} st_fmt;
 
-/**
- * struct printHandler - struct to choose the right function depending
- * on the format specifier passed to _printf()
- * @c: format specifier
- * @f: pointer to the correct printing function
- */
-typedef struct printHandler
-{
-	char c;
-	int (*f)(va_list ap, flags_t *f);
-} ph;
-
-/* print_nums */
-int print_int(va_list l, flags_t *f);
-void print_number(int n);
-int print_unsigned(va_list l, flags_t *f);
-int count_digit(int i);
-
-/* print_bases */
-int print_hex(va_list l, flags_t *f);
-int print_hex_big(va_list l, flags_t *f);
-int print_binary(va_list l, flags_t *f);
-int print_octal(va_list l, flags_t *f);
-
-/* converter */
-char *convert(unsigned long int num, int base, int lowercase);
-
-/* _printf */
 int _printf(const char *format, ...);
-
-/* get_print */
-int (*get_print(char s))(va_list, flags_t *);
-
-/* get_flag */
-int get_flag(char s, flags_t *f);
-
-/* print_alpha */
-int print_string(va_list l, flags_t *f);
-int print_char(va_list l, flags_t *f);
-
-/* write_funcs */
 int _putchar(char c);
-int _puts(char *str);
-
-/* print_custom */
-int print_rot13(va_list l, flags_t *f);
-int print_rev(va_list l, flags_t *f);
-int print_bigS(va_list l, flags_t *f);
-
-/* print_address */
-int print_address(va_list l, flags_t *f);
-
-/* print_percent */
-int print_percent(va_list l, flags_t *f);
-
-#endif
+int func_string(va_list);
+int func_char(va_list);
+int func_percent(va_list);
+int get_match_func(const char *, va_list, st_fmt st_format[]);
+int func_digit(va_list);
+int func_binary_convert(va_list);
+int func_octal_convert(va_list);
+int func_hex_Upcase_convert(va_list);
+int func_hex_Lowcase_convert(va_list);
+int binary_oct_hex_convert(unsigned int, int, int);
+int func_unsign_int(va_list list);
+int func_stringUppercase(va_list list);
+int func_revstr(va_list list);
+int func_rot13(va_list);
+#endif /* ALX_A */
