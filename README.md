@@ -1,5 +1,5 @@
 # 0x11. C - printf
-THIS IA A TEAM PROJECT DONE BY MARTINS AREM and IGBAYILOLA OLUWATOSIN SEMILORE
+THIS IS A TEAM PROJECT DONE BY MARTINS AREM and IGBAYILOLA OLUWATOSIN SEMILORE
 **Concepts**
 
 **For this project, students are expected to look at these concepts:**
