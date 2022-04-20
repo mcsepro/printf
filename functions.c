@@ -1,100 +1,140 @@
 #include "main.h"
-#include <stdio.h>
-#include <stdarg.h>
-/**
- * print_c - prints character
- * @args: character argument
- * Return: number of characters
- */
-int print_c(va_list args)
-{
-	int c;
 
-	c = va_arg(args, int);
-	return (_putchar(c));
-}
 /**
- * print_s - prints a string
- * @args: string  argument
- * Return: number of characters
+ * print_char - Print characters (c)
+ * @arg_list: Stores a list of characters
+ *
+ * Return: num of characters printed
  */
-int print_s(va_list args)
+int print_char(va_list arg_list)
+{
+	char c = va_arg(arg_list, int);
+
+	return (_write(c));
+}
+
+/**
+* print_string - print string (s)
+* @arg_list: Stores a list of characters
+* Return: num of parameters printed
+*/
+
+int print_string(va_list arg_list)
 {
 	int i, count = 0;
 	char *str;
 
-	i = 0;
-	str = va_arg(args, char*);
+	str = va_arg(arg_list, char *);
 	if (str == NULL)
 		str = "(null)";
-	while (str[i] != '\0')
-	{
-		_putchar(str[i]);
-		i++;
-		count++;
-	}
+
+	for (i = 0; str[i]; i++)
+		count += _write(str[i]);
+
 	return (count);
+
 }
+
 /**
- * print_percent - pass the percent sign
- * @args: string  argument
- * Return: return the percent sign
+ * print_percent - function to print %
+ * @arguments: unused
  *
+ * Return: always 1
  */
-int print_percent(va_list args)
-{
-	char *str;
 
-	str = "%";
-	if (va_arg(args, int) == *str)
-	{
-		return (*str);
-	}
-	return (*str);
+int print_percent(__attribute__((unused))va_list arguments)
+{
+	char c = '%';
+
+	_write(c);
+	return (1);
 }
 
+
 /**
- * print_d - prints a decimal
- * @args: decimal argument
- * Return: counter
+ * print_integer - prints an integer
+ * @arguments: integer to print
+ *
+ * Return: number of chars and digits printed
  */
-int print_d(va_list args)
+
+int print_integer(va_list arguments)
 {
+	int x[10];
+	int f, d, t, y, i;
 
-	unsigned int absolute, aux, countnum, count;
-	int n;
+	t = va_arg(arguments, int);
+	i = 0;
+	d = 1000000000;
+	x[0] = t / d;
 
-	count = 0;
-	n = va_arg(args, int);
-		if (n < 0)
+	for (f = 1; f < 10; f++)
+	{
+		d /= 10;
+		x[f] = (t / d) % 10;
+	}
+	if (t < 0)
+	{
+		_write('-');
+		i++;
+
+		for (f = 0; f < 10; f++)
+			x[f] *= -1;
+	}
+	for (f = 0, y = 0; f < 10; f++)
+	{
+		y += x[f];
+
+		if (y != 0 || f == 9)
 		{
-			absolute = (n * -1);
-			count += _putchar('-');
+			_write('0' + x[f]);
+			i++;
 		}
-		else
-			absolute = n;
+	}
 
-	aux = absolute;
-	countnum = 1;
-	while (aux > 9)
-	{
-		aux /= 10;
-		countnum *= 10;
-	}
-	while (countnum >= 1)
-	{
-		count += _putchar(((absolute / countnum) % 10) + '0');
-		countnum /= 10;
-	}
-	return (count);
+	return (i);
 }
+
 /**
- * print_i - prints integer
- * @args: integer argument
- * Return: the decimal function
+ * print_decimal - print a decimal
+ * @arguments: decimal to print
+ *
+ * Return: number of characters and digits printed
  */
 
-int print_i(va_list args)
+int print_decimal(va_list arguments)
 {
-	return (print_d(args));
+	int x[10];
+	int f, d, t, y, i;
+
+	t = va_arg(arguments, int);
+	i = 0;
+	d = 1000000000;
+	x[0] = t / d;
+
+	for (f = 1; f < 10; f++)
+	{
+		d /= 10;
+		x[f] = (t / d) % 10;
+	}
+	if (t < 0)
+	{
+		_write('-');
+		i++;
+
+		for (f = 0; f < 10; f++)
+			x[f] *= -1;
+	}
+	for (f = 0, y = 0; f < 10; f++)
+	{
+		y += x[f];
+
+		if (y != 0 || f == 9)
+		{
+			_write('0' + x[f]);
+			i++;
+		}
+	}
+
+	return (i);
 }
